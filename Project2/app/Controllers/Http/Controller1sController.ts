@@ -3,23 +3,40 @@ import ServiceNameService from 'App/Services/Fetchdata'
 import Validator2Validator from 'App/Validators/Validator2Validator'
 
 export default class Controller1sController {
-  public async index({request,response}: HttpContextContract) {
-    
-    const payload: any = await request.validate(Validator2Validator.postSchema, )
-   const load = await ServiceNameService.getabsapproveexcel(payload)
-    
-   return load
+  public async index({}: HttpContextContract) {
+    return "params.post"
   }
 
-  public async create({}: HttpContextContract) {}
+  public async create({params}: HttpContextContract) {
+    // return params.post
+  }
 
-  public async store({}: HttpContextContract) {}
+  public async store({params}: HttpContextContract) {
+    return 'creating a posts'
+  }
 
-  public async show({}: HttpContextContract) {}
+  public async show({params}: HttpContextContract) {
+    return  `get single posts with an id of ${typeof params.id}`
+  }
 
-  public async edit({}: HttpContextContract) {}
+  public async edit({params}: HttpContextContract) {
+    const post = params.post;
+const comments = params.comment;
 
-  public async update({}: HttpContextContract) {}
+const result = `${post} ${comments}`;
+return result;
 
-  public async destroy({}: HttpContextContract) {}
+  }
+
+  public async update({params}: HttpContextContract) {
+    const post = params.post;
+    const comments = params.comment;
+    
+    const result = `${post} ${comments}`;
+    return result;
+      }
+
+  public async destroy({}: HttpContextContract) {
+    return "destroy"
+  }
 }

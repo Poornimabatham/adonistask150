@@ -8,8 +8,7 @@ export default class UservalidationValidator {
    
   
   static  postSchema = {schema:schema.create({
-    iam:schema.number(),
-        TimeOutCity:schema.string([rules.alpha()])
+   
 
 
 
