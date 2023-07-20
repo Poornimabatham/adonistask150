@@ -10,21 +10,23 @@ export default class ServiceNameService {
       .select(
         "*",
 
-        Database.raw("SUBSTRING(I.TimeOut, 1, 4) AS timeout"),
-        Database.raw(
-          "TIME_FORMAT(SEC_TO_TIME((ROUND(TIME_TO_SEC(A.TotalLoggedHours)/60)) * 60), '%H:%i') as totalloggedhours"
-        ),
+        // Database.raw("SUBSTRING(I.TimeOut, 1, 4) AS timeout"),
+        Database.raw("TIMEDIFF('12:10:10','13:10:10') AS timeDIFF"),
+        // Database.raw(
+        //   "TIME_FORMAT(SEC_TO_TIME((ROUND(TIME_TO_SEC(A.TotalLoggedHours)/60)) * 60), '%H:%i') as totalloggedhours"
+        // ),
 
-        Database.raw("SUBSTRING(I.`TimeOut`, 1, 8) as newtimeout"),
-        Database.raw(
-          "TIME_FORMAT(SEC_TO_TIME((ROUND(TIME_TO_SEC(I.`LoggedHours`)/60)) * 60), '%H:%i') as loggedhours"
-        ),
-        Database.raw("SUBSTRING(S.HoursPerDay, 1, 8) as hoursperday"),
-        Database.raw("SUBSTRING(TiMEDIFF(S.`TimeOut`,S.`TimeIn`), 1, 3)as sl"),
-        Database.raw(
-          " SUBSTRING(TiMEDIFF(CONCAT('2021-02-17',  '  ', S.TimeOut),CONCAT(  '2021-02-16',  '  ', S.TimeIn )), 1, 5)as msl"
-        )
+        // Database.raw("SUBSTRING(I.`TimeOut`, 1, 8) as newtimeout"),
+        // Database.raw(
+        //   "TIME_FORMAT(SEC_TO_TIME((ROUND(TIME_TO_SEC(I.`LoggedHours`)/60)) * 60), '%H:%i') as loggedhours"
+        // ),
+        // Database.raw("SUBSTRING(S.HoursPerDay, 1, 8) as hoursperday"),
+        // Database.raw("SUBSTRING(TiMEDIFF(S.`TimeOut`,S.`TimeIn`), 1, 3)as sl"),
+        // Database.raw(
+        //   " SUBSTRING(TiMEDIFF(CONCAT('2021-02-17',  '  ', S.TimeOut),CONCAT(  '2021-02-16',  '  ', S.TimeIn )), 1, 5)as msl"
+        // )
       );
+      return query
 
     let res: any[] = [];
 
@@ -37,6 +39,7 @@ export default class ServiceNameService {
     let hrsperday = "";
     let underover = "";
     for (const row of queryResult) {
+       row.timein
       if (row.shifttype == " ") {
         shifthours = row.sl;
       } else if (row.shifttype == undefined) {
@@ -46,20 +49,21 @@ export default class ServiceNameService {
       }
 
       let attdate = row.AttendanceDate;
-
+  
       data["AttendanceDate"] = row.AttendanceDate;
       data["ShiftId"] = row.ShiftId;
       data["checkInLoc"] = row.checkInLoc;
       data["CheckOutLoc"] = row.CheckOutLoc;
 
-      data["TimeIn"] = new Date(row.timein).toLocaleTimeString("en-US", {
+      data["TimeIn"] = new Date(row.TimeIn).toLocaleTimeString("en-IN", {
         hour: "2-digit",
         minute: "2-digit",
       });
-      if (row.timein === row.timeout) {
+      
+      if (row.TimeIn === row.TimeOut) {
         data["TimeOut"] = "00:00";
       } else {
-        data["TimeOut"] = new Date(row.timeout).toLocaleTimeString("en-US", {
+        data["TimeOut"] = new Date(row.TimeOut).toLocaleTimeString("en-IN", {
           hour: "2-digit",
           minute: "2-digit",
         });
