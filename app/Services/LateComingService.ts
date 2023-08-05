@@ -33,6 +33,34 @@ export default class LateComingService {
       condition = `${DeptId}`;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const employees = await Database.query().from('EmployeeMaster')
+  .where('OrganizationId', data.Orgid)
+  .whereIn('Id', Database.query().from('AttendanceMaster').select('EmployeeId')
+    .where('OrganizationId', data.Orgid)
+    .where('AttendanceDate', DateFrom)
+    .where('TimeIn', '!=', '00:00:00')
+  )
+  .where('is_Delete', 0)
+  .orderBy('FirstName')
+
+  return employees
     const lateComersList = await Database.from("AttendanceMaster as A")
       .innerJoin("EmployeeMaster as E", "E.Id", "A.EmployeeId")
       .innerJoin("ShiftMaster as S", "S.Id", "A.ShiftId")
@@ -53,6 +81,10 @@ export default class LateComingService {
       .where("A.OrganizationId", data.Orgid)
       .andWhere("A.AttendanceDate", DateFrom)
       .whereNotIn("A.AttendanceStatus", [2, 3, 5])
+
+
+
+      
       .whereNot("S.shifttype", 3)
       .orderBy("E.FirstName", "asc")
       .limit(limit);
