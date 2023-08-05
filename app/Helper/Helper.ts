@@ -74,7 +74,7 @@ export default class Helper {
     return status;
   }
   public static async getDepartmentIdByEmpID(empid: number) {
-   
+   return empid
     const EmpQuery = await Database.from("EmployeeMaster")
       .select("Department")
       .where("id", empid);

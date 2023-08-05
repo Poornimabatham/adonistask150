@@ -28,7 +28,7 @@ export default class LateComingService {
     const res: any[] = [];
 
     var adminStatus = await Helper.getAdminStatus(data.Empid);
-    var condition = "";
+    var condition:any = "";
     if (adminStatus == 2) {
       let DeptId = await Helper.getDepartmentIdByEmpID(data.Empid);
       condition = `${DeptId}`;
@@ -56,6 +56,7 @@ export default class LateComingService {
   .whereNotIn('A.AttendanceStatus', [2, 3, 5])
   .whereNot('S.shifttype', 3)
   .orderBy('E.FirstName', 'asc')
+  .where(condition)
   .limit(limit);
   
 
